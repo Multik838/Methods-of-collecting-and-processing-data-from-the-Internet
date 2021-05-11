@@ -31,7 +31,7 @@ method = 'friends.getOnline'
 
 user_id = '474319172'
 
-access_token = '73633bf630b4776b7aaa930fa021657c70c3ed829abcb7f2712213e967d45d4f8af18e8859e391c770fad'
+access_token = ''
 
 responce = requests.get(f'{url}/method/{method}?v=5.52&access_token={access_token}')
 
