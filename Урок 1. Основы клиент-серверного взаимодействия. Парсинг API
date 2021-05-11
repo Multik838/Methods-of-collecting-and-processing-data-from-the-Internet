@@ -1,0 +1,18 @@
+1. Посмотреть документацию к API GitHub, разобраться как вывести список репозиториев для конкретного пользователя, сохранить JSON-вывод в файле *.json.
+
+import requests
+import json
+
+params = {'q': 'name', 'id': '69846294'}
+
+url = 'https://api.github.com'
+
+user = 'Multik838'
+
+responce = requests.get(f'{url}/users/{user}/repos')
+
+with open('data.json', 'w') as f:
+    json.dump(responce.json(), f)
+
+for i in responce.json():
+    print(i['full_name'])
