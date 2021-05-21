@@ -1,0 +1,33 @@
+from pymongo import MongoClient
+from pprint import pprint
+from Vacancy_data import VacancyBank
+
+mongodb = MongoClient('127.0.0.1', 27017) # ip и порт
+vacancy_db = mongodb['vacancy_db'] # создаём указатель на создание базы данных
+
+# проверка на возможность создания коллекции
+try:
+    collection = vacancy_db.create_collection('vacancy')
+except BaseException:
+    collection = vacancy_db.vacancy
+
+vacancy_base = VacancyBank('Python')
+
+for vacancy in vacancy_base.parser_result:
+    try:
+        collection.insert_one(vacancy)
+    except BaseException:
+        continue
+
+
+def print_salary(salary):
+    """Функция вывода вакансий с заработной платой больше введенной суммы"""
+    objects = collection.find({'salary_max': {'$gt': salary}})
+    for obj in objects:
+        pprint(obj)
+
+
+
+
+pprint(print_salary(700000))
+
