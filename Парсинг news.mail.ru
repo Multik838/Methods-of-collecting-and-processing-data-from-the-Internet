@@ -3,7 +3,6 @@ from typing import List, Any, Dict
 from lxml import html
 import requests
 
-
 # Настраиваем соединение
 header = {'User_Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                         'Chrome/90.0.4430.212 Safari/537.36'}
@@ -12,12 +11,17 @@ dom = html.fromstring(responce.text)
 
 # Создадим итератор для обработки всех новостей с сайта
 mail_News = []
-mail_ru_News = dom.xpath("//div[contains(@class, 'layout')]")
+mail_ru_News = dom.xpath("//div[contains(@class, 'layout')]//text()")
+
 for news in mail_ru_News:
     # Соберём данные в словарь
-    NMR = {'center': news.xpath("//a[@class= 'list__text']//text()"),
-           'News_MMO': news.xpath("//span[@class= 'newsitem__title-inner']//text()"),
-           'society': news.xpath("//span[@class = 'link__text']//text()")}
+    NMR = {'source': news.xpath("//span[@class= 'newsitem__param']//text()|//div/span[@class = 'newsitem__param js-ago']/text()"),
+           'name_link': news.xpath("//li[@class= 'list__item']//@href|//span[@class= 'link__text']//text()|"
+                                  "//div/span[@class = 'newsitem__param js-ago']/text()"),
+           'day_news_link': news.xpath("//a[@class= 'newsitem__title link-holder']//@href|"
+                              "//a[@class= 'newsitem__title link-holder']//text()|"
+                              "//div/span[@class = 'newsitem__param js-ago']/text()")}
+                              
     # В нашем словаре обнаружены пропуски \\xa0" и также мы скачали (, 'Отменить')
     # Переведём словарь в строку
     strings = []
