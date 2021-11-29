@@ -1,0 +1,3 @@
+x = '60000руб'
+item['currency'] = "".join(" " if el.isdigit() else el for el in x).split()
+item['salary_min'] = "".join(el if el.isdigit() else " " for el in x).split()
